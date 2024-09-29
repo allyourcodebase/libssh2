@@ -43,7 +43,7 @@ pub fn build(b: *std.Build) void {
             "version.c",
             "knownhost.c",
             "agent.c",
-            "mbedtls.c",
+            //"mbedtls.c",
             "pem.c",
             "keepalive.c",
             "global.c",
@@ -57,18 +57,18 @@ pub fn build(b: *std.Build) void {
     lib.defineCMacro("LIBSSH2_MBEDTLS", null);
 
     if (target.result.os.tag == .windows) {
-        lib.defineCMacro("_CRT_SECURE_NO_DEPRECATE", "1");
-        lib.defineCMacro("HAVE_LIBCRYPT32", null);
-        lib.defineCMacro("HAVE_WINSOCK2_H", null);
-        lib.defineCMacro("HAVE_IOCTLSOCKET", null);
-        lib.defineCMacro("HAVE_SELECT", null);
-        lib.defineCMacro("LIBSSH2_DH_GEX_NEW", "1");
+        //lib.defineCMacro("_CRT_SECURE_NO_DEPRECATE", "1");
+        //lib.defineCMacro("HAVE_LIBCRYPT32", null);
+        //lib.defineCMacro("HAVE_WINSOCK2_H", null);
+        //lib.defineCMacro("HAVE_IOCTLSOCKET", null);
+        //lib.defineCMacro("HAVE_SELECT", null);
+        //lib.defineCMacro("LIBSSH2_DH_GEX_NEW", "1");
 
         if (target.result.isGnu()) {
-            lib.defineCMacro("HAVE_UNISTD_H", null);
-            lib.defineCMacro("HAVE_INTTYPES_H", null);
-            lib.defineCMacro("HAVE_SYS_TIME_H", null);
-            lib.defineCMacro("HAVE_GETTIMEOFDAY", null);
+            //lib.defineCMacro("HAVE_UNISTD_H", null);
+            //lib.defineCMacro("HAVE_INTTYPES_H", null);
+            //lib.defineCMacro("HAVE_SYS_TIME_H", null);
+            //lib.defineCMacro("HAVE_GETTIMEOFDAY", null);
         }
     } else {
         lib.defineCMacro("HAVE_UNISTD_H", null);
