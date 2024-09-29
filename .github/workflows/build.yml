@@ -1,0 +1,43 @@
+name: Build and Test
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
+        target: [
+          native,
+          x86_64-linux-gnu,
+          x86_64-linux-musl,
+          x86_64-windows,
+          aarch64-macos,
+          aarch64-linux-gnu,
+          aarch64-linux-musl
+          # TODO: bsd
+        ]
+        optimize: [
+          Debug,
+          ReleaseSafe,
+          ReleaseFast,
+          ReleaseSmall
+        ]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: Setup Zig
+        uses: mlugg/setup-zig@v1
+        with:
+          version: 0.13.0
+
+      - name: Build
+        run: zig build -Dtarget=${{ matrix.target }} -Doptimize=${{ matrix.optimize }}
