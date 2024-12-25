@@ -4,10 +4,7 @@ pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
-    const libssh2_dep = b.dependency("libssh2", .{
-        .target = target,
-        .optimize = optimize,
-    });
+    const libssh2_dep = b.dependency("libssh2", .{});
 
     const mbedtls_dep = b.dependency("mbedtls", .{
         .target = target,

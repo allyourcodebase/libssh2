@@ -28,14 +28,15 @@
             .hash = "1220a0863be6190270168974107d04653087aacc89e72cd81914789cb7d84b744fda",
         },
         .mbedtls = .{
-            .url = "git+https://github.com/allyourcodebase/mbedtls.git#e4da72f6a8bedc883e34953514a3b62cbbd4f251",
-            .hash = "1220ffeef9740c79b6f62f6bf350f12a7b14768acf548cb47cd56c5ca58a15af7970",
+            .url = "git+https://github.com/allyourcodebase/mbedtls.git#40a2c1126b45f87d19b256229620bc2995637e5a",
+            .hash = "122034bd019496a4e20a775116c53ef05e3247e9a98436b3407d4c0503fa3a16cd42",
         },
     },
     .paths = .{
         "build.zig",
         "build.zig.zon",
         "src",
+        "config",
         // For example...
         //"LICENSE",
         //"README.md",
