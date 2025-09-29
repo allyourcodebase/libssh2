@@ -1,4 +1,4 @@
-[![CI](https://github.com/hamptokr/zig-libssh2/actions/workflows/ci.yaml/badge.svg)](https://github.com/hamptokr/zig-libssh2/actions)
+[![CI](https://github.com/allyourcodebase/libssh2/actions/workflows/ci.yaml/badge.svg)](https://github.com/allyourcodebase/libssh2/actions)
 
 # libssh2
 
