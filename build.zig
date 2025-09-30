@@ -21,6 +21,10 @@ pub fn build(b: *std.Build) void {
 
     const crypto_choice = b.option(CryptoBackend, "crypto-backend", "Crypto backend: auto|openssl|mbedtls|libgcrypt|wincng") orelse .auto;
     const zlib = b.option(bool, "zlib", "Enable SSH payload compression (links zlib)") orelse false;
+    const mbedtls_linkage = b.option(std.builtin.LinkMode, "mbedtls-linkage", "static|dynamic") orelse .static;
+    const openssl_linkage = b.option(std.builtin.LinkMode, "openssl-linkage", "static|dynamic") orelse .static;
+    const wincng_linkage = b.option(std.builtin.LinkMode, "wincng-linkage", "static|dynamic") orelse .static;
+    const gcrypt_linkage = b.option(std.builtin.LinkMode, "gcrypt-linkage", "static|dynamic") orelse .static;
 
     const is_windows = target.result.os.tag == .windows;
     const mbedtls = crypto_choice == .mbedtls;
@@ -70,27 +74,26 @@ pub fn build(b: *std.Build) void {
 
     if (mbedtls) {
         ssh2_lib.root_module.addCMacro("LIBSSH2_MBEDTLS", "1");
-        ssh2_lib.linkSystemLibrary("mbedtls");
-        ssh2_lib.linkSystemLibrary("mbedcrypto");
-        ssh2_lib.linkSystemLibrary("mbedx509");
+        ssh2_lib.linkSystemLibrary2("mbedtls", .{ .preferred_link_mode = mbedtls_linkage });
+        ssh2_lib.linkSystemLibrary2("mbedcrypto", .{ .preferred_link_mode = mbedtls_linkage });
+        ssh2_lib.linkSystemLibrary2("mbedx509", .{ .preferred_link_mode = mbedtls_linkage });
     }
 
     if (openssl) {
         ssh2_lib.root_module.addCMacro("LIBSSH2_OPENSSL", "1");
-        ssh2_lib.linkSystemLibrary("ssl");
-        ssh2_lib.linkSystemLibrary("crypto");
+        ssh2_lib.linkSystemLibrary2("ssl", .{ .preferred_link_mode = openssl_linkage });
+        ssh2_lib.linkSystemLibrary2("crypto", .{ .preferred_link_mode = openssl_linkage });
     }
 
     if (wincng) {
         ssh2_lib.root_module.addCMacro("LIBSSH2_WINCNG", "1");
-        // Windows system libs (zig handles names)
-        ssh2_lib.linkSystemLibrary("bcrypt");
-        ssh2_lib.linkSystemLibrary("ncrypt");
+        ssh2_lib.linkSystemLibrary2("bcrypt", .{ .preferred_link_mode = wincng_linkage });
+        ssh2_lib.linkSystemLibrary2("ncrypt", .{ .preferred_link_mode = wincng_linkage });
     }
 
     if (libgcrypt) {
         ssh2_lib.root_module.addCMacro("LIBSSH2_LIBGCRYPT", "1");
-        ssh2_lib.linkSystemLibrary("gcrypt");
+        ssh2_lib.linkSystemLibrary2("gcrypt", .{ .preferred_link_mode = gcrypt_linkage });
     }
 
     if (zlib) {
