@@ -75,8 +75,8 @@ pub fn build(b: *std.Build) void {
             ssh2_lib.linkSystemLibrary("mbedcrypto");
             ssh2_lib.linkSystemLibrary("mbedx509");
         } else {
-            // TODO: Add lazy dependency to build.zig.zon for linking statically.
-            // For now it's the users resposibility to compile and statically link against library
+            // TODO: Add lazy dependency to build.zig.zon and statically link against library.
+            // For now it's the users resposibility to compile and link against the library
         }
     }
 
@@ -86,14 +86,14 @@ pub fn build(b: *std.Build) void {
             ssh2_lib.linkSystemLibrary("ssl");
             ssh2_lib.linkSystemLibrary("crypto");
         } else {
-            // TODO: Add lazy dependency to build.zig.zon for linking statically.
-            // For now it's the users resposibility to compile and statically link against library
+            // TODO: Add lazy dependency to build.zig.zon and statically link against library.
+            // For now it's the users resposibility to compile and link against the library
         }
     }
 
     if (wincng) {
         // There is no need to provide `b.systemIntegrationOption` here,
-        // because on windows this library MUST be dynamically linked. There is no static version.
+        // because on windows this library MUST be dynamically linked.
 
         ssh2_lib.root_module.addCMacro("LIBSSH2_WINCNG", "1");
         ssh2_lib.linkSystemLibrary2("bcrypt", .{});
@@ -105,8 +105,8 @@ pub fn build(b: *std.Build) void {
         if (b.systemIntegrationOption("libgcrypt", .{ .default = true })) {
             ssh2_lib.linkSystemLibrary("gcrypt");
         } else {
-            // TODO: Add lazy dependency to build.zig.zon for linking statically.
-            // For now it's the users resposibility to compile and statically link against library
+            // TODO: Add lazy dependency to build.zig.zon and statically link against library.
+            // For now it's the users resposibility to compile and link against the library
         }
     }
 

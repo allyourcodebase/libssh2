@@ -40,4 +40,4 @@ const libssh2_dependency = b.dependency("libssh2", .{
 ```
 
 By default libssh2 will dynamically link against the crypto backend.
-This can be changed through system integration options, i.e. `-fsys` and `-fno-sys`
+This can be disable through the system integration options, i.e. `-fsys` and `-fno-sys`
