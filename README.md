@@ -36,5 +36,6 @@ const libssh2_dependency = b.dependency("libssh2", .{
     .strip = true, // Strip debug information (default=false)
     .linkage = .static, // Whether to link statically or dynamically (default=static)
     .@"crypto-backend" = .auto, // auto will to default to wincng on windows, openssl everywhere else. (default=auto)
+    .@"link-system-crypto-backend" = true, // If enabled will link against system libraries (default=true)
 });
 ```
