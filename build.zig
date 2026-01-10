@@ -72,32 +72,32 @@ pub fn build(b: *std.Build) void {
     if (mbedtls) {
         ssh2_lib.root_module.addCMacro("LIBSSH2_MBEDTLS", "1");
         if (link_system_crypto) {
-            ssh2_lib.linkSystemLibrary("mbedtls");
-            ssh2_lib.linkSystemLibrary("mbedcrypto");
-            ssh2_lib.linkSystemLibrary("mbedx509");
+            ssh2_lib.root_module.linkSystemLibrary("mbedtls");
+            ssh2_lib.root_module.linkSystemLibrary("mbedcrypto");
+            ssh2_lib.root_module.linkSystemLibrary("mbedx509");
         }
     }
 
     if (openssl) {
         ssh2_lib.root_module.addCMacro("LIBSSH2_OPENSSL", "1");
         if (link_system_crypto) {
-            ssh2_lib.linkSystemLibrary("ssl");
-            ssh2_lib.linkSystemLibrary("crypto");
+            ssh2_lib.root_module.linkSystemLibrary("ssl");
+            ssh2_lib.root_module.linkSystemLibrary("crypto");
         }
     }
 
     if (wincng) {
         ssh2_lib.root_module.addCMacro("LIBSSH2_WINCNG", "1");
         if (link_system_crypto) {
-            ssh2_lib.linkSystemLibrary("bcrypt");
-            ssh2_lib.linkSystemLibrary("ncrypt");
+            ssh2_lib.root_module.linkSystemLibrary("bcrypt");
+            ssh2_lib.root_module.linkSystemLibrary("ncrypt");
         }
     }
 
     if (libgcrypt) {
         ssh2_lib.root_module.addCMacro("LIBSSH2_LIBGCRYPT", "1");
         if (link_system_crypto) {
-            ssh2_lib.linkSystemLibrary("gcrypt");
+            ssh2_lib.root_module.linkSystemLibrary("gcrypt");
         }
     }
 
