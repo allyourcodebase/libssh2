@@ -20,6 +20,7 @@ pub fn build(b: *std.Build) void {
     const pic = b.option(bool, "pie", "Produce Position Independent Code");
 
     const crypto_choice = b.option(CryptoBackend, "crypto-backend", "Crypto backend: auto|openssl|mbedtls|libgcrypt|wincng") orelse .auto;
+    const link_system_crypto = b.option(bool, "link-system-crypto-backend", "If true, library will link against system libraries") orelse true;
     const zlib = b.option(bool, "zlib", "Enable SSH payload compression (links zlib)") orelse false;
 
     const is_windows = target.result.os.tag == .windows;
@@ -70,43 +71,33 @@ pub fn build(b: *std.Build) void {
 
     if (mbedtls) {
         ssh2_lib.root_module.addCMacro("LIBSSH2_MBEDTLS", "1");
-        if (b.systemIntegrationOption("mbedtls", .{ .default = true })) {
+        if (link_system_crypto) {
             ssh2_lib.linkSystemLibrary("mbedtls");
             ssh2_lib.linkSystemLibrary("mbedcrypto");
             ssh2_lib.linkSystemLibrary("mbedx509");
-        } else {
-            // TODO: Add lazy dependency to build.zig.zon and statically link against library.
-            // For now it's the users resposibility to compile and link against the library
         }
     }
 
     if (openssl) {
         ssh2_lib.root_module.addCMacro("LIBSSH2_OPENSSL", "1");
-        if (b.systemIntegrationOption("openssl", .{ .default = true })) {
+        if (link_system_crypto) {
             ssh2_lib.linkSystemLibrary("ssl");
             ssh2_lib.linkSystemLibrary("crypto");
-        } else {
-            // TODO: Add lazy dependency to build.zig.zon and statically link against library.
-            // For now it's the users resposibility to compile and link against the library
         }
     }
 
     if (wincng) {
-        // There is no need to provide `b.systemIntegrationOption` here,
-        // because on windows this library MUST be dynamically linked.
-
         ssh2_lib.root_module.addCMacro("LIBSSH2_WINCNG", "1");
-        ssh2_lib.linkSystemLibrary2("bcrypt", .{});
-        ssh2_lib.linkSystemLibrary2("ncrypt", .{});
+        if (link_system_crypto) {
+            ssh2_lib.linkSystemLibrary("bcrypt");
+            ssh2_lib.linkSystemLibrary("ncrypt");
+        }
     }
 
     if (libgcrypt) {
         ssh2_lib.root_module.addCMacro("LIBSSH2_LIBGCRYPT", "1");
-        if (b.systemIntegrationOption("libgcrypt", .{ .default = true })) {
+        if (link_system_crypto) {
             ssh2_lib.linkSystemLibrary("gcrypt");
-        } else {
-            // TODO: Add lazy dependency to build.zig.zon and statically link against library.
-            // For now it's the users resposibility to compile and link against the library
         }
     }
 
