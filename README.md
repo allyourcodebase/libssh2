@@ -38,6 +38,3 @@ const libssh2_dependency = b.dependency("libssh2", .{
     .@"crypto-backend" = .auto, // auto will to default to wincng on windows, openssl everywhere else. (default=auto)
 });
 ```
-
-By default libssh2 will dynamically link against the crypto backend.
-This can be disable through the system integration options, i.e. `-fsys` and `-fno-sys`
