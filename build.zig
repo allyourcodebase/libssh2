@@ -17,7 +17,7 @@ pub fn build(b: *std.Build) void {
 
     const linkage = b.option(std.builtin.LinkMode, "linkage", "Link mode") orelse .static;
     const strip = b.option(bool, "strip", "Omit debug information");
-    const pic = b.option(bool, "pie", "Produce Position Independent Code");
+    const pic = b.option(bool, "pic", "Produce Position Independent Code");
 
     const crypto_choice = b.option(CryptoBackend, "crypto-backend", "Crypto backend: auto|openssl|mbedtls|libgcrypt|wincng") orelse .auto;
     const link_system_crypto = b.option(bool, "link-system-crypto-backend", "If true, library will link against system libraries") orelse true;

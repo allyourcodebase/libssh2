@@ -2,7 +2,7 @@
     .name = .libssh2,
     .version = "1.11.1",
     .fingerprint = 0x57bdea04475e0726, // Changing this has security and trust implications.
-    .minimum_zig_version = "0.15.1",
+    .minimum_zig_version = "0.16.0",
     .dependencies = .{
         .libssh2 = .{
             .url = "https://github.com/libssh2/libssh2/archive/refs/tags/libssh2-1.11.1.tar.gz",

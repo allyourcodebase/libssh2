@@ -21,7 +21,7 @@ const libssh2_dependency = b.dependency("libssh2", .{
     .target = target,
     .optimize = optimize,
 });
-your_exe.linkLibrary(libssh2_dependency.artifact("ssh2"));
+your_exe.root_module.linkLibrary(libssh2_dependency.artifact("ssh2"));
 ```
 
 ## Build Options
