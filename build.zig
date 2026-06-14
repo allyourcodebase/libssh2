@@ -39,15 +39,11 @@ pub fn build(b: *std.Build) void {
             .windows => "__declspec(dllexport)",
             else => "",
         },
-        .LIBSSH2_HAVE_ZLIB = zlib,
         .HAVE_SYS_UIO_H = !is_windows,
-        .HAVE_WRITEV = !is_windows,
         .HAVE_SYS_SOCKET_H = !is_windows,
         .HAVE_NETINET_IN_H = !is_windows,
         .HAVE_ARPA_INET_H = !is_windows,
-        .HAVE_SYS_TYPES_H = !is_windows,
         .HAVE_INTTYPES_H = true,
-        .HAVE_STDINT_H = true,
     });
 
     const ssh2_lib = b.addLibrary(.{
