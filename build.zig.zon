@@ -13,6 +13,11 @@
             .hash = "zlib-1.3.1-ZZQ7lc8NAABUbHzDe_cSWboCqMbrLkVwvFkKnojgeiT2",
             .lazy = true,
         },
+        .mbedtls = .{
+            .url = "git+https://github.com/allyourcodebase/mbedtls.git#68d5872dca0faa3e2a09d3329c73bd8779cc34e6",
+            .hash = "mbedtls-3.6.4-E4NUR24VAADBF5pt-No-Z90DjozkzySYAgq6eDFy9Xdy",
+            .lazy = true,
+        },
     },
     .paths = .{
         "build.zig",

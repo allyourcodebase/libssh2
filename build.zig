@@ -20,7 +20,11 @@ pub fn build(b: *std.Build) void {
     const pic = b.option(bool, "pic", "Produce Position Independent Code");
 
     const crypto_choice = b.option(CryptoBackend, "crypto-backend", "Crypto backend: auto|openssl|mbedtls|libgcrypt|wincng") orelse .auto;
-    const link_system_crypto = b.option(bool, "link-system-crypto-backend", "If true, library will link against system libraries") orelse true;
+    const link_system_crypto = b.option(
+        bool,
+        "link-system-crypto-backend",
+        "If true, library will link against system libraries",
+    ) orelse (crypto_choice != .mbedtls);
     const zlib = b.option(bool, "zlib", "Enable SSH payload compression (links zlib)") orelse false;
 
     const is_windows = target.result.os.tag == .windows;
@@ -71,6 +75,13 @@ pub fn build(b: *std.Build) void {
             ssh2_lib.root_module.linkSystemLibrary("mbedtls", .{});
             ssh2_lib.root_module.linkSystemLibrary("mbedcrypto", .{});
             ssh2_lib.root_module.linkSystemLibrary("mbedx509", .{});
+        } else {
+            if (b.lazyDependency("mbedtls", .{
+                .target = target,
+                .optimize = optimize,
+            })) |mbedtls_dep| {
+                ssh2_lib.root_module.linkLibrary(mbedtls_dep.artifact("mbedtls"));
+            }
         }
     }
 
