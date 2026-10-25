@@ -7,27 +7,6 @@ const CryptoBackend = enum {
     mbedtls,
     libgcrypt,
     wincng,
-
-    const Choice = enum {
-        auto,
-        openssl,
-        mbedtls,
-        libgcrypt,
-        wincng,
-
-        fn choice(self: @This(), os: std.Target.Os.Tag) CryptoBackend {
-            return switch (self) {
-                .auto => switch (os) {
-                    .windows => .wincng,
-                    else => .mbedtls,
-                },
-                .openssl => .openssl,
-                .mbedtls => .mbedtls,
-                .libgcrypt => .libgcrypt,
-                .wincng => .wincng,
-            };
-        }
-    };
 };
 
 pub fn build(b: *std.Build) void {
@@ -39,8 +18,14 @@ pub fn build(b: *std.Build) void {
     const strip = b.option(bool, "strip", "Omit debug information");
     const pic = b.option(bool, "pic", "Produce Position Independent Code");
 
-    const crypto_choice = b.option(CryptoBackend.Choice, "crypto-backend", "Crypto backend: auto|openssl|mbedtls|libgcrypt|wincng") orelse .auto;
-    const crypto = crypto_choice.choice(target.result.os.tag);
+    const crypto: CryptoBackend = b.option(
+        CryptoBackend,
+        "crypto-backend",
+        "Crypto backend: openssl|mbedtls|libgcrypt|wincng",
+    ) orelse switch (target.result.os.tag) {
+        .windows => .wincng,
+        else => .openssl,
+    };
 
     const zlib = b.option(bool, "zlib", "Enable SSH payload compression (links zlib)") orelse false;
 
